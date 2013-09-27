@@ -1,6 +1,3 @@
-$poshPath = (Split-Path -Path $MyInvocation.MyCommand.Definition -Parent) + '\posh-git\posh-git'
-Import-Module $poshPath
-
 Set-Alias msb $env:WinDir\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
 Set-Alias msbuild $env:WinDir\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
 Set-Alias msbuild35 $env:WinDir\Microsoft.NET\Framework\v3.5\MSBuild.exe
@@ -11,8 +8,12 @@ $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
 $administrator = $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 
 # posh-git settings
+Import-Module posh-git
+
 $GitPromptSettings.BeforeText = '['
 $GitPromptSettings.AfterText = '] '
+$GitPromptSettings.WorkingForegroundColor = [ConsoleColor]::Gray
+$GitPromptSettings.UntrackedForegroundColor = [ConsoleColor]::Gray
 $GitPromptSettings.EnableWindowTitle = ''
 Enable-GitColors
 
