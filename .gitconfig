@@ -1,0 +1,62 @@
+[core]
+	editor = Notepad2.exe
+	autocrlf = true
+[user]
+	name = Rob Mensching
+[alias]
+	bclean = "!f() { git branch --merged ${1-develop} | grep -vE '(master|develop)' | xargs git branch -d; }; f"
+	bc = "!f() { git branch --merged ${1-develop} | grep -vE '(master|develop)' | xargs git branch -d; }; f"
+	bc1 = "!f() { git branch --merged ${1-master} | grep -vE '(master)' | xargs git branch -d; }; f"
+	devup = fetch origin develop:develop
+	mastup = fetch origin master:master
+	hubup = !git mastup && git rebase master && git checkout master && git puff && git bc1
+	ff = merge --ff --ff-only
+	int = merge --no-commit --no-ff
+	integrate = merge --no-commit --no-ff
+	puff = pull --ff --ff-only --prune
+	pum = pull --no-ff
+	pumi = pull --no-ff --no-commit
+	pullhub = pull --no-ff --no-commit --rebase=preserve
+	muff = merge --ff --ff-only
+	mum = merge --no-ff
+	cln = clean -e packages/ -e node_modules/ -dx -n
+	clnf = clean -e packages/ -e node_modules/ -dx
+	cls = clean -ndx -e *.user
+	clsf = clean -fdx -e *.user
+	st = status -s
+	start = checkout -b
+	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+	uff = !git pull --ff --ff-only --prune $@ && git submodule update --init --recursive
+	sub = git submodule update --init --recursive
+	ll = log --oneline --graph --decorate
+	pb = !git pull --ff --ff-only --prune && git bc
+	pbj = !git devup && git checkout develop && git puff && git bc
+	pbjm = !git mastup && git checkout master && git puff && git bc1
+	rel = !git checkout develop && git puff && git checkout master && git puff && git rebase develop
+	relc = !git checkout develop && git puff && git bc && git checkout master && git puff && git rebase develop
+	pr = "!f() { exec vsts code pr \"$@\"; }; f"
+	repo = "!f() { exec vsts code repo \"$@\"; }; f"
+[color "branch"]
+	current = cyan bold
+	local = white
+	remote = red bold
+[color "diff"]
+	meta = white
+	frag = yellow bold
+	old = red bold
+	new = green bold
+[color "status"]
+	added = green bold
+	changed = yellow bold
+	untracked = cyan bold
+[credential]
+	helper = manager
+[gc]
+	auto = 256
+[merge]
+	conflictstyle = diff3
+[difftool "sourcetree"]
+	cmd = '' \"$LOCAL\" \"$REMOTE\"
+[mergetool "sourcetree"]
+	cmd = "'' "
+	trustExitCode = true
