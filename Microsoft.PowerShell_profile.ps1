@@ -59,7 +59,9 @@ $administrator = $principal.IsInRole([System.Security.Principal.WindowsBuiltInRo
 # posh-git settings
 Import-Module posh-git
 
-$GitPromptSettings.WorkingColor.ForegroundColor = [ConsoleColor]::Gray
+$GitPromptSettings.AnsiConsole = 0
+#$GitPromptSettings.DefaultColor.ForegroundColor = [ConsoleColor]::Gray
+$GitPromptSettings.WorkingColor.ForegroundColor = "Gray"
 $GitPromptSettings.PathStatusSeparator = ''
 $GitPromptSettings.AfterStatus.Text = '] '
 
@@ -67,19 +69,17 @@ function prompt
 {
     $realLASTEXITCODE = $LASTEXITCODE
 
-    # Reset color, which can be messed up by Enable-GitColors
-    #$Host.UI.RawUI.ForegroundColor = $GitPromptSettings.DefaultForegroundColor
-
     $terminator = if ($administrator) { '!' } else { '$' }
     $Host.UI.RawUI.WindowTitle = $pwd.ProviderPath + $terminator + ' for ' + $env:UserName + '@' + $env:ComputerName
 
     $prompt = ""
-    $prompt += $pwd.ProviderPath + "`n"
+    $prompt += Write-Prompt "$($pwd.ProviderPath)`n" -ForegroundColor DarkGray
     $prompt += Write-VcsStatus
-    $prompt += $terminator + ' '
+    $prompt += Write-Prompt $terminator -ForegroundColor DarkGray
 
     $global:LASTEXITCODE = $realLASTEXITCODE
-    return $prompt
+    #$prompt
+    if ($prompt) { "$prompt " } else { " " }
 }
 
 function Add-Path {
@@ -202,5 +202,5 @@ Set-Alias timethis Measure-Command2
 # Required VS2012 environment variable
 #$env:VisualStudioVersion="12.0"
 
-Set-Location C:\src
+Set-Location E:\src
 #Clear-Host
