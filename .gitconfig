@@ -60,3 +60,5 @@
 [mergetool "sourcetree"]
 	cmd = "'' "
 	trustExitCode = true
+[credential "helperselector"]
+	selected = manager
